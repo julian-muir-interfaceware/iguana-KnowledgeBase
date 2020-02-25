@@ -4,6 +4,20 @@
 -- MySQL, Microsoft SQL Server, Oracle, Maria DB etc. etc.
 -- PLEASE READ THE TODO statement on line 38 and follow it.
 
+-- ***********************************************************************
+-- ***********************************************************************
+-- 2) Modified the code by adding extra main() functions for testing
+--    the last function named main() will execute - if the "wrong" main()
+--    is executing just rename it to _main() so the previous main() runs
+-- 3) The code defaults to using ***no delimiters*** so it will exactly
+--    match the behaviour of the original custom_merge code. 
+-- 4) When you first run the code you will get an error that indicates
+--    a syntax error in the generated SQL - this is because (by default)
+--    custom_merge is NOT using delimiters (point 2) - setting delimiters
+--    in custom_merge will immediately resolve this issue
+-- ***********************************************************************
+-- ***********************************************************************
+
 require 'create_database'
 require 'custom_merge'
 
@@ -40,7 +54,7 @@ function main(Data)
    -- TODO - Please comment out CreateTables(DB)
    -- after you have run the code the first time.
    -------------------
---   CreateTables(DB)
+   --CreateTables(DB)
    -------------------
    -- Parse incoming raw message with hl7.parse
    local MsgIn = hl7.parse{vmd='demo.vmd', data=Data}
@@ -75,6 +89,7 @@ function main(Data)
    DB:close()
 end
 
+-- modified MapPatient() for testing purposes
 function MapPatientSpace(Patient, PID)
    Patient.Id            = PID[3][1][1]
    Patient["First Name"] = PID[5][1][2]
@@ -84,41 +99,45 @@ function MapPatientSpace(Patient, PID)
    return Patient
 end
 
--- Using SQLite
-function main(Data) 
+-- Using SQLite -- with ***VMD*** file
+-- Set the delimiters to remove the SQL error 
+-- see comments 2) and 3) at the top of the code
+function main(Data)  
    DB = db.connect{api=db.SQLITE, name='DemoDatabase.sqlite'}
    local MsgIn = hl7.parse{vmd='demo.vmd', data=Data}
    local TableOut = db.tables{vmd='demo_tables_space.vmd', name='ADT'}
+   
+   -- create the database tables if they don't exist
+   CreateTables(DB)
    
    MapPatientSpace(TableOut["Patient Test"][1], MsgIn.PID)
    
    DB:customMerge{data=TableOut, live=true}
 
    DB:query{sql='Select * from [Patient Test]'}
+   -- comment out delete to insert multiple rows to DB
    DB:execute{sql='Delete from [Patient Test]', live=true}   
 end
 
-function MapPatientSpace(Patient, PID)
-   Patient.Id            = PID[3][1][1]
-   Patient["First Name"] = PID[5][1][2]
-   Patient.LastName      = PID[5][1][1][1]
-   Patient.Gender        = PID[8]   
-   -- Click the Patient Row to the right to see results
-   return Patient
-end
-
--- Using SQLite
+-- Using SQLite -- with ***DBS*** file
+-- Set the delimiters to remove the SQL error 
+-- see comments 2) and 3) at the top of the code
+-- NOTE: rename function to _main() to run "VMD main" above
 function main(Data) 
    DB = db.connect{api=db.SQLITE, name='DemoDatabase.sqlite'}
    local MsgIn = hl7.parse{vmd='demo.vmd', data=Data}
    local D = dbs.init{filename = 'demo_tables_space.dbs'}
    local TableOut = D:tables()
    
+   -- create the database tables if they don't exist
+   CreateTables(DB)   
+   
    MapPatientSpace(TableOut["Patient Test"][1], MsgIn.PID)
    
    DB:customMerge{data=TableOut, live=true}
 
    DB:query{sql='Select * from [Patient Test]'}
+   -- comment out delete to insert multiple rows to DB
    DB:execute{sql='Delete from [Patient Test]', live=true}   
 end
 

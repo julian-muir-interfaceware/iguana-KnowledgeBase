@@ -7,10 +7,11 @@
         "demo_tables_space.vmd"
     ],
     "LuaDependencies": [
-        "custom_merge"
+        "custom_merge",
+        "custom_merge_orig"
     ],
     "OtherDependencies": [],
-    "timestamp": "1582626200",
+    "timestamp": "1582629309",
     "version_info": {
         "build": 0,
         "major": 6,

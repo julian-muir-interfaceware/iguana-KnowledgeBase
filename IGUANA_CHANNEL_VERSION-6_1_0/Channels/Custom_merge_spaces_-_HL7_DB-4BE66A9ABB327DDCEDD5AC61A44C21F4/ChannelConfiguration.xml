@@ -7,8 +7,8 @@
    use_message_filter="false">
    <to_mapper
       guid="Tutorial_HL7_to_Database-To-tqBSozBVQSaU5v"
-      commit_id="d12fb61cdecbfdc3e2de324d2ccdc28473eeeba7"
-      commit_comment="default no delimiter = same as orig behaviour + FIXED COMMENT SPELLING">
+      commit_id="4b36452ff15f2daa22359c5f1da1d25c857c63d1"
+      commit_comment="added custom_merge_orig + lots of comments + fixed to generate tables if missing + SET NO DEFAULT DELIMITERS">
       <dequeue_list>
          <dequeue
             source_name="self"
