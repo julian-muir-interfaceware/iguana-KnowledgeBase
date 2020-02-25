@@ -1,0 +1,19 @@
+{
+    "LocalDependencies": [
+        "create_database.lua",
+        "demo.vmd",
+        "demo_tables.vmd",
+        "demo_tables_space.dbs",
+        "demo_tables_space.vmd"
+    ],
+    "LuaDependencies": [
+        "custom_merge"
+    ],
+    "OtherDependencies": [],
+    "timestamp": "1582626200",
+    "version_info": {
+        "build": 0,
+        "major": 6,
+        "minor": 0
+    }
+}

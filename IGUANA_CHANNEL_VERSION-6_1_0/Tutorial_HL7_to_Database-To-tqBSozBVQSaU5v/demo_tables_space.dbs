@@ -1,0 +1,23 @@
+create table [Patient](
+   [Id] string,
+   [FirstName] string,
+   [LastName] string,
+   [Gender] string,
+   key([Id])
+);
+
+create table [Kin](
+   [PatientId] string,
+   [LastName] string,
+   [FirstName] string,
+   [Relationship] string
+);
+
+create table [Patient Test](
+   [Id] string,
+   [First Name] string,
+   [LastName] string,
+   [Gender] string,
+   key([Id])
+);
+
